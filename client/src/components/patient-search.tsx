@@ -4,12 +4,14 @@ import { useLanguage } from "@/hooks/use-language";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Plus, Syringe } from "lucide-react";
+import PatientForm from "@/components/patient-form";
+import { Search, Plus, Syringe, UserPlus } from "lucide-react";
 import type { Patient } from "@shared/schema";
 
 export default function PatientSearch() {
   const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
+  const [showPatientForm, setShowPatientForm] = useState(false);
 
   const { data: patients, isLoading } = useQuery<Patient[]>({
     queryKey: ['/api/patients/search', searchQuery],
@@ -71,8 +73,11 @@ export default function PatientSearch() {
         )}
         
         <div className="flex flex-wrap gap-2">
-          <Button className="flex-1 bg-medical-blue text-white hover:bg-blue-700 text-sm">
-            <Plus className="mr-2 h-4 w-4" />
+          <Button 
+            onClick={() => setShowPatientForm(true)}
+            className="flex-1 bg-medical-blue text-white hover:bg-blue-700 text-sm"
+          >
+            <UserPlus className="mr-2 h-4 w-4" />
             {t('patients.newPatient')}
           </Button>
           <Button className="flex-1 bg-sanitary-green text-white hover:bg-green-700 text-sm">
@@ -81,6 +86,12 @@ export default function PatientSearch() {
           </Button>
         </div>
       </CardContent>
+      
+      {/* Formulaire de nouveau patient */}
+      <PatientForm 
+        open={showPatientForm} 
+        onOpenChange={setShowPatientForm} 
+      />
     </Card>
   );
 }
