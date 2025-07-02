@@ -3,6 +3,7 @@ import NavigationHeader from "@/components/navigation-header";
 import DashboardStats from "@/components/dashboard-stats";
 import PatientSearch from "@/components/patient-search";
 import RecentVaccinations from "@/components/recent-vaccinations";
+import ApiStatus from "@/components/api-status";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -59,9 +60,14 @@ export default function Dashboard() {
 
         <DashboardStats />
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <PatientSearch />
-          <RecentVaccinations />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-2 space-y-6">
+            <PatientSearch />
+            <RecentVaccinations />
+          </div>
+          <div>
+            <ApiStatus />
+          </div>
         </div>
 
         <Card className="bg-white border border-gray-200">

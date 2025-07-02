@@ -108,6 +108,7 @@ The system uses a well-structured PostgreSQL schema with the following entities:
 
 Changelog:
 - July 02, 2025. Initial setup
+- July 02, 2025. Prepared API integration layer for external FastAPI/LND server connection
 
 ## User Preferences
 
