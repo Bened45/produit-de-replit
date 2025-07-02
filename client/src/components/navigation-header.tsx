@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useLanguage } from "@/hooks/use-language";
+import { useLocation } from "wouter";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Bell, Hospital } from "lucide-react";
@@ -7,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function NavigationHeader() {
   const { t, language, changeLanguage } = useLanguage();
+  const [location] = useLocation();
   const [notificationCount] = useState(3);
 
   const languageOptions = [
@@ -16,11 +19,17 @@ export default function NavigationHeader() {
   ];
 
   const navigationItems = [
-    { key: 'dashboard', label: t('nav.dashboard'), active: true },
-    { key: 'patients', label: t('nav.patients'), active: false },
-    { key: 'appointments', label: t('nav.appointments'), active: false },
-    { key: 'reports', label: t('nav.reports'), active: false },
+    { key: 'dashboard', label: t('nav.dashboard'), path: '/' },
+    { key: 'patients', label: t('nav.patients'), path: '/patients' },
+    { key: 'vaccinations', label: 'Vaccinations', path: '/vaccinations' },
+    { key: 'appointments', label: t('nav.appointments'), path: '/appointments' },
+    { key: 'reports', label: t('nav.reports'), path: '/reports' },
   ];
+
+  const isActive = (path: string) => {
+    if (path === '/' && (location === '/' || location === '/dashboard')) return true;
+    return location === path;
+  };
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
@@ -35,17 +44,17 @@ export default function NavigationHeader() {
             </div>
             <nav className="hidden md:ml-8 md:flex md:space-x-8">
               {navigationItems.map((item) => (
-                <a
+                <Link
                   key={item.key}
-                  href={`#${item.key}`}
+                  href={item.path}
                   className={`px-1 pt-1 pb-4 text-sm font-medium ${
-                    item.active
+                    isActive(item.path)
                       ? 'text-medical-blue border-b-2 border-medical-blue'
                       : 'text-clinical-gray hover:text-gray-700'
                   }`}
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
